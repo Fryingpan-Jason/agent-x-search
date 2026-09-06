@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
+import { connect } from 'node:net';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { getDefaultEnvironment } from '@modelcontextprotocol/sdk/client/stdio.js';
@@ -66,13 +67,32 @@ test('doctor stays offline by default; network check is one credential-free meta
 });
 test('generated proxy survives the SDK minimal environment in a real Node child', { timeout: 10000 }, async t => {
   const urls = [];
+  const tunnels = [];
+  const sockets = new Set();
   const proxy = createServer((req, res) => { urls.push(req.url); res.writeHead(401); res.end(); });
+  // Node versions may tunnel HTTP through CONNECT or send an absolute-form request.
+  proxy.on('connect', (req, socket, head) => {
+    tunnels.push(req.url);
+    const upstream = connect(proxy.address().port, '127.0.0.1', () => {
+      socket.write('HTTP/1.1 200 Connection Established\r\n\r\n');
+      if (head.length) upstream.write(head);
+      socket.pipe(upstream).pipe(socket);
+    });
+    for (const stream of [socket, upstream]) {
+      sockets.add(stream);
+      stream.on('error', () => { socket.destroy(); upstream.destroy(); });
+      stream.on('close', () => sockets.delete(stream));
+    }
+  });
   await new Promise(resolve => proxy.listen(0, '127.0.0.1', resolve));
-  t.after(() => { proxy.closeAllConnections(); proxy.close(); });
+  t.after(() => { for (const socket of sockets) socket.destroy(); proxy.closeAllConnections(); proxy.close(); });
   const config = JSON.parse(clientConfig(settings('config', '--client', 'cursor', '--proxy', `http://127.0.0.1:${proxy.address().port}`)));
   const { stdout } = await promisify(execFile)(process.execPath, ['--use-env-proxy', '--input-type=module', '-e', 'const r = await fetch("http://agent-x-search.invalid/probe"); console.log(r.status); await r.body.cancel();'], {
     env: { ...getDefaultEnvironment(), ...config.mcpServers['agent-x-search'].env }, timeout: 5000,
   });
   assert.equal(stdout.trim(), '401');
-  assert.deepEqual(urls, ['http://agent-x-search.invalid/probe']);
+  if (tunnels.length) {
+    assert.deepEqual(tunnels, ['agent-x-search.invalid:80']);
+    assert.deepEqual(urls, ['/probe']);
+  } else assert.deepEqual(urls, ['http://agent-x-search.invalid/probe']);
 });
