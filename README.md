@@ -6,7 +6,7 @@
 
 An unofficial, local **stdio MCP server**. Existing Grok subscription login by default; explicitly selected xAI API keys are also supported. No browser automation, HTTP server, background service, build step or runtime dependencies.
 
-**0.1.0 release candidate:** npm commands below become available after publication. Until then use a source checkout or the reviewed package archive. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
+**0.1.0 is available on [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0)** with an installable package archive and checksum. npm publication is pending; until then install the GitHub archive using the fixed-path instructions below. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
 
 ## A 30-second walkthrough
 

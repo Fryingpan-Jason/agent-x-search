@@ -6,7 +6,7 @@
 
 非官方本地 stdio MCP，不是 Skill。默认复用官方 Grok CLI 的现有订阅登录，也可显式选择 xAI API Key。零运行时依赖、无构建，不需要 HTTP 服务、浏览器或开机启动项。
 
-当前是 **0.1.0 发布候选**，尚未发布 npm。以下命令在发布后可用；现在可使用源码或本地 tgz 包。API Key 路径仅通过离线契约测试，尚未实测。
+**0.1.0 已发布到 [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0)**，可以下载安装包和校验文件。npm 发布尚待完成；下方包名命令届时可用，目前请安装 GitHub 上的 tgz 包。API Key 路径仅通过离线契约测试，尚未实测。
 
 ## 接入
 

@@ -1,6 +1,6 @@
 # Current release handoff
 
-0.1.0 release candidate ready for review. Public name: agent-x-search; intended GitHub owner: Fryingpan-Jason. Public GitHub/npm/Registry publication and public posts are not authorized by preparation alone and have not happened.
+0.1.0 published on GitHub: [repository](https://github.com/Fryingpan-Jason/agent-x-search), [release and package archive](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0). The maintainer authorized release after candidate review. npm publication is pending maintainer account requirements; Registry has not been submitted and no community posts were sent.
 
 Implemented: explicit auth modes, portable configuration, one default tool, opt-in CLI research, response/cancellation limits, six config formats, offline doctor, package metadata, official SDK tests and CI. Final source tests: 28/28 on Windows / Node 26.8.1. Installed-tarball tests and local credential/file/package audit passed. Exact saved Codex command passed official SDK handshake/discovery/invalid-input checks after migration; local fixed-path registration keeps deep mode explicitly enabled. No new inference calls.
 
@@ -8,6 +8,6 @@ Old local history remains available for rollback and must not be pushed. The cle
 
 Artifact: agent-x-search-0.1.0.tgz, 18,216 bytes, 14 files, SHA-256 ea854c8a442752c7e2e6f6a87f2ccc1183f1eaba1d0bbf76b978f68efe5f1874. Generated reports are local artifacts rather than committed CI claims. Default tool definitions: 1,218 bytes. Startup p50 51.922 ms; mock roundtrip p50 0.370 ms; methodology and the non-speedup comparison are in performance.md. Registry draft passed the official 2025-12-11 schema.
 
-Limitations: no new model calls in this preparation; API-key path remains experimental, and non-Windows CI/application checks remain pending. The historical demo is explicitly dated. No speedup guarantee or star-count claim.
+All six Windows/macOS/Linux × Node 24.5/26 jobs passed [release CI](https://github.com/Fryingpan-Jason/agent-x-search/actions/runs/34038564846). Those are offline provider checks, not six live-client tests. API-key live validation and the five non-Codex application checks remain pending. No new model calls were made during preparation or release; the historical demo stays dated. No speedup guarantee or star-count claim.
 
-Next after candidate review and explicit publication authorization: recheck repository/npm name availability, publish only the clean public branch, run remote CI, review its results, then publish the reviewed npm tarball. Registry registration follows npm and is optional for first release. Maintainer completes account login themselves.
+Release tag v0.1.0 points to f9d993c09e804bf2605123fbd4021a2463de7049, whose archive and checksum are immutable. Main may contain later documentation. Only public-main -> remote main and the release tag were pushed; private predecessor branches remain local. Next: complete npm account requirements and publish the same reviewed release tarball, verify registry integrity, then update channel status. Do not substitute a repack of later documentation under the same reviewed artifact. Registry listing follows npm and is optional for first release. Account login/security confirmation belongs to the maintainer.

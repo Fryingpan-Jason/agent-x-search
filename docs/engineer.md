@@ -14,13 +14,13 @@ Development commands: `npm ci --ignore-scripts`, `npm test`, `npm run test:packa
 | Subscription direct / CLI | Historical predecessor live success, dated in demo/performance; current candidate makes no new inference calls |
 | Actual Codex | Candidate saved-config migration parsed by Codex CLI; official SDK initialized the exact saved command, found both locally enabled tools, rejected invalid calls without inference (54.134 ms) |
 | Other five applications | Config shape provided/checked, application verification pending |
-| macOS/Linux and Node 24.5 | Six-job CI workflow prepared; not executed before repository publication |
+| Windows/macOS/Linux × Node 24.5/26 | All six jobs passed source, installed-package, SDK, benchmark and history checks in [release CI](https://github.com/Fryingpan-Jason/agent-x-search/actions/runs/34038564846); these checks use fake providers, not live Grok sessions |
 
 Package and benchmark commands produce machine-readable reports. Package tests install the tarball with no dev dependencies, execute the installed bin shim, initialize the installed production entry, and call shipped modules with an injected fake provider using the SDK. They do not claim to validate xAI credentials.
 
 The release audit checks tracked files, package file selection, budgets, and (with --history) every reachable public commit. AGENT_X_SEARCH_AUDIT_AUTH_FILE optionally enables exact comparison with an existing local auth file; no values or that path are saved in the report. CI uses pattern checks without any credential file.
 
-Local package verification passed: 14 shipped files, 18,216 bytes compressed, no runtime dependencies; installed Windows command shim, installed production entry, shipped-module fake-provider calls, six configuration formats, and installed/source file hashes checked. The tarball SHA-256 is recorded in the release handoff. Registry metadata validated against the official 2025-12-11 schema on 2026-09-06; it has not been submitted. Registry schema validation was a documentation request, not inference.
+Released archive verification passed: 14 shipped files, 18,216 bytes compressed, no runtime dependencies; installed Windows command shim, installed production entry, shipped-module fake-provider calls, six configuration formats, and installed/source file hashes checked. GitHub v0.1.0 points to the CI-passing original release tree; later main-branch documentation updates do not replace that immutable archive. Its SHA-256 is recorded in the release handoff. Registry metadata validated against the official 2025-12-11 schema on 2026-09-06; it has not been submitted. Registry schema validation was a documentation request, not inference.
 
 The earlier complete real-user Codex app-server diagnostic timed out before initialize; saved-command transport and separate Codex-client discovery were passing checks. Do not replace that history with a claim that every application path passed.
 
