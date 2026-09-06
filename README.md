@@ -95,5 +95,6 @@ Flags override environment variables, then defaults. No project config file is n
 - `rate_limited`: wait for quota availability; no retry occurred.
 - `request_uncertain`: a timeout may already have consumed quota or API spend. Do not assume it was free.
 - Startup/discovery failure: run doctor as the same OS user, check Node/paths, then the client's MCP diagnostics. No model call is needed to diagnose transport.
+- Connection timeout around ten seconds: your MCP client may not inherit terminal proxy variables. Explicitly configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY in its server environment and reload the connection. Source checkout adds opt-in proxy config export and `doctor --network`; see [proxy setup](docs/clients.md#settings). These new flags are not in npm 0.1.0. Directly connected networks need no proxy configuration.
 
 No telemetry or persistent result cache. Grok may retain its normal CLI session metadata. See [engineering evidence](docs/engineer.md), [architecture and limits](docs/architecture.md), and [contributing](CONTRIBUTING.md). MIT licensed.

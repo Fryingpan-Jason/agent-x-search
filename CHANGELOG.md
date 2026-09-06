@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Opt-in proxy environment export for all six client configuration formats, so filtered MCP environments can reach the provider.
+- Optional credential-free network doctor and allowlisted transport causes in uncertain request errors; default doctor stays offline.
+
 ## 0.1.0 — 2026-09-06
 
 - One default native X search tool; optional subscription-only CLI research.

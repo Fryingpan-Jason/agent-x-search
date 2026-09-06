@@ -73,6 +73,12 @@ export function usageSummary(value) {
 export function checkCancelled(signal) {
   if (signal?.aborted) throw new SearchError('cancelled', 'Search cancelled; no automatic retry.');
 }
+export function transportReason(error) {
+  const code = error?.cause?.code ?? error?.code;
+  const safeCodes = ['UND_ERR_CONNECT_TIMEOUT', 'ECONNREFUSED', 'ECONNRESET', 'ENETUNREACH', 'ENOTFOUND', 'EAI_AGAIN', 'CERT_HAS_EXPIRED', 'UNABLE_TO_VERIFY_LEAF_SIGNATURE', 'SELF_SIGNED_CERT_IN_CHAIN'];
+  if (safeCodes.includes(code)) return code;
+  return error?.name === 'TimeoutError' ? 'REQUEST_TIMEOUT' : 'TRANSPORT_ERROR';
+}
 export async function readBoundedJson(response, limit) {
   const chunks = []; let size = 0;
   if (!response.body) throw new SearchError('invalid_response', 'Upstream returned an empty body.');
@@ -98,7 +104,7 @@ export async function directSearch(args, { model = 'grok-4.6', authMode = 'oauth
   try {
     // Exactly one POST, explicit billing mode, no redirect, retry or fallback.
     response = await fetchImpl(authMode === 'api-key' ? API_ENDPOINT : ENDPOINT, { method: 'POST', redirect: 'error', signal: combined, headers: { ...auth.headers, Authorization: `Bearer ${auth.key}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  } catch { checkCancelled(signal); throw new SearchError('request_uncertain', 'Request failed or timed out; quota or API spend may have been consumed. No retry.'); }
+  } catch (error) { checkCancelled(signal); throw new SearchError('request_uncertain', `Request failed (${transportReason(error)}); quota or API spend may have been consumed. No retry.`); }
   if (!response.ok) {
     await response.body?.cancel().catch(() => {});
     if (response.status === 401) throw new SearchError(authMode === 'oauth' ? 'reauth_required' : 'api_key_rejected', authMode === 'oauth' ? 'Grok OAuth rejected. Run grok models or grok login; no retry.' : 'API key rejected. Check XAI_API_KEY; no retry.');

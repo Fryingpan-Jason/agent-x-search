@@ -8,8 +8,8 @@ export class SearchError extends Error {
 }
 const bad = message => { throw new SearchError('invalid_configuration', message); };
 export function parseSettings(argv = [], env = process.env) {
-  const values = {}, bool = new Set(['enable-deep', 'help', 'version', 'local']);
-  const names = new Set(['auth', 'model', 'grok-home', 'grok-cli', 'temp-dir', 'client']);
+  const values = {}, bool = new Set(['enable-deep', 'help', 'version', 'local', 'proxy-from-env', 'network']);
+  const names = new Set(['auth', 'model', 'grok-home', 'grok-cli', 'temp-dir', 'client', 'proxy']);
   let command = 'serve';
   if (argv[0] && !argv[0].startsWith('-')) { command = argv[0]; argv = argv.slice(1); }
   if (!['serve', 'doctor', 'config'].includes(command)) bad('Expected serve, doctor, or config.');
@@ -23,9 +23,13 @@ export function parseSettings(argv = [], env = process.env) {
     }
   }
   const deepEnv = env.AGENT_X_SEARCH_ENABLE_DEEP;
+  if ((values.proxy !== undefined || values['proxy-from-env']) && command !== 'config') bad('Proxy options are for config; set proxy environment variables when running serve or doctor.');
+  if (values.proxy !== undefined && values['proxy-from-env']) bad('Choose --proxy or --proxy-from-env, not both.');
+  if (values.network && command !== 'doctor') bad('--network is only available with doctor.');
   if (deepEnv !== undefined && !['0', '1', 'false', 'true'].includes(deepEnv)) bad('AGENT_X_SEARCH_ENABLE_DEEP must be 0, 1, false, or true.');
   const settings = {
     command, help: !!values.help, version: !!values.version, client: values.client, local: !!values.local,
+    proxy: values.proxy, proxyFromEnv: !!values['proxy-from-env'], network: !!values.network,
     auth: values.auth ?? env.AGENT_X_SEARCH_AUTH ?? 'oauth',
     model: values.model ?? env.AGENT_X_SEARCH_MODEL ?? 'grok-4.6',
     enableDeep: values['enable-deep'] ?? ['1', 'true'].includes(deepEnv),
