@@ -8,4 +8,4 @@
 - Bounded responses, cancellation, explicit partial/no-source results, reported usage.
 - Official MCP SDK tests, packed-artifact checks and a six-job OS/Node CI matrix.
 
-GitHub release and package archive are available; npm publication is pending. All six OS/Node CI combinations passed offline checks. See docs/engineer.md for verified and pending checks.
+GitHub release and npm package are available. All six OS/Node CI combinations passed offline checks. See docs/engineer.md for verified and pending checks.

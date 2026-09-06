@@ -6,7 +6,7 @@
 
 An unofficial, local **stdio MCP server**. Existing Grok subscription login by default; explicitly selected xAI API keys are also supported. No browser automation, HTTP server, background service, build step or runtime dependencies.
 
-**0.1.0 is available on [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0)** with an installable package archive and checksum. npm publication is pending; until then install the GitHub archive using the fixed-path instructions below. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
+**0.1.0 is available on [npm](https://www.npmjs.com/package/agent-x-search)** and [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0), with the same installable package archive. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
 
 ## A 30-second walkthrough
 
@@ -26,7 +26,7 @@ That call took **32.794 seconds**, one model round. This is historical output fr
 
 Requires **Node.js 24.5+**, a local MCP client, network access, and an eligible Grok subscription session or xAI API key. Zero runtime dependencies does not mean zero account requirements or free searches.
 
-After npm publication:
+Quick start:
 
 ```sh
 codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
@@ -50,7 +50,7 @@ npm install --prefix /absolute/path/to/agent-tools --omit=dev --ignore-scripts a
 node --use-env-proxy /absolute/path/to/agent-tools/node_modules/agent-x-search/bin/agent-x-search.mjs config --client codex --local
 ```
 
-On Windows, use your own absolute path and quote paths containing spaces. Paste the generated config into your client. It starts the installed file directly; no global npm installation or OS startup item is needed. Before publication, install the local `agent-x-search-0.1.0.tgz` instead of the package name.
+On Windows, use your own absolute path and quote paths containing spaces. Paste the generated config into your client. It starts the installed file directly; no global npm installation or OS startup item is needed. To install the GitHub archive, use the downloaded `agent-x-search-0.1.0.tgz` instead of the package name.
 
 From source: `node --use-env-proxy bin/agent-x-search.mjs serve`. Only contributors running tests need `npm ci`.
 

@@ -2,7 +2,7 @@
 
 All targets connect to the same local stdio server. They are not separate plugins. Config generation does not modify files or authenticate.
 
-After npm publication: `npx -y agent-x-search@0.1.0 config --client CLIENT`. Before publication: `node bin/agent-x-search.mjs config --client CLIENT`. Add `--local` when generating a fixed installed-path command. Add `--auth api-key` explicitly for API billing, or `--enable-deep` for optional subscription CLI research.
+From npm: `npx -y agent-x-search@0.1.0 config --client CLIENT`. From a source checkout: `node bin/agent-x-search.mjs config --client CLIENT`. Add `--local` when generating a fixed installed-path command. Add `--auth api-key` explicitly for API billing, or `--enable-deep` for optional subscription CLI research.
 
 | Client | Target | Where / official source | Verification at candidate preparation |
 | --- | --- | --- | --- |
