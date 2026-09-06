@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "agent-x-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agent-x-search@0.1.0",
+        "serve",
+        "--auth",
+        "oauth",
+        "--model",
+        "grok-4.6"
+      ]
+    }
+  }
+}

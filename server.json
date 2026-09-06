@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Fryingpan-Jason/agent-x-search",
+  "description": "Native X search with original-post citations and explicit subscription or API billing.",
+  "repository": { "url": "https://github.com/Fryingpan-Jason/agent-x-search", "source": "github" },
+  "version": "0.1.0",
+  "packages": [{
+    "registryType": "npm",
+    "identifier": "agent-x-search",
+    "version": "0.1.0",
+    "transport": { "type": "stdio" },
+    "environmentVariables": [
+      { "name": "AGENT_X_SEARCH_AUTH", "description": "oauth (existing official CLI session) or explicit paid api-key mode. No fallback.", "default": "oauth", "format": "string", "isRequired": false, "isSecret": false },
+      { "name": "XAI_API_KEY", "description": "Required only when AGENT_X_SEARCH_AUTH=api-key. API usage incurs charges.", "format": "string", "isRequired": false, "isSecret": true }
+    ]
+  }]
+}

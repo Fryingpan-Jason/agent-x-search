@@ -1,0 +1,24 @@
+{
+  "name": "agent-x-search",
+  "version": "0.1.0",
+  "mcpName": "io.github.Fryingpan-Jason/agent-x-search",
+  "description": "Give your agent native X search, with original-post citations and transparent usage.",
+  "license": "MIT",
+  "author": "Fryingpan-Jason",
+  "repository": { "type": "git", "url": "https://github.com/Fryingpan-Jason/agent-x-search.git" },
+  "bugs": "https://github.com/Fryingpan-Jason/agent-x-search/issues",
+  "homepage": "https://github.com/Fryingpan-Jason/agent-x-search#readme",
+  "keywords": ["mcp", "x-search", "grok", "codex", "claude-code", "agent", "twitter"],
+  "type": "module",
+  "engines": { "node": ">=24.5.0" },
+  "bin": { "agent-x-search": "bin/agent-x-search.mjs" },
+  "files": ["bin/", "src/", "README.md", "README.zh-CN.md", "LICENSE", "CHANGELOG.md"],
+  "scripts": {
+    "start": "node --use-env-proxy bin/agent-x-search.mjs serve",
+    "test": "node --test test/*.test.mjs",
+    "test:package": "node scripts/test-package.mjs",
+    "bench": "node scripts/benchmark.mjs",
+    "audit:release": "node scripts/audit-release.mjs"
+  },
+  "devDependencies": { "@modelcontextprotocol/sdk": "1.30.0" }
+}

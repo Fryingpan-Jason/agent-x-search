@@ -1,0 +1,24 @@
+name: Installation or search problem
+description: Report a reproducible issue without credentials or private queries.
+body:
+  - type: markdown
+    attributes:
+      value: "Never paste API keys, auth.json, complete environment variables, or private queries. Redact usernames and local paths."
+  - type: input
+    id: versions
+    attributes:
+      label: OS, Node, package and client versions
+    validations:
+      required: true
+  - type: dropdown
+    id: auth
+    attributes:
+      label: Configured auth mode
+      options: [oauth, api-key]
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected behavior and safe error code
+      description: Use a public or synthetic query. Include relevant doctor check names, not credential files.
+    validations:
+      required: true

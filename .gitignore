@@ -1,0 +1,10 @@
+node_modules/
+.local/
+.artifacts/
+.npm-cache/
+evidence/
+.runtime/
+*.tgz
+*.log
+.env*
+auth.json*
