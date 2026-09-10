@@ -17,7 +17,7 @@ All protocol tests also use the official TypeScript MCP client SDK as a developm
 
 Portable generated examples live in `examples/clients/`. For native Windows clients that cannot launch the npm command shim, use the fixed-path Node configuration. This avoids shell-wrapper differences and supports paths with spaces through structured command/args arrays.
 
-Long tool calls need an adequate client timeout. Generated Codex, OpenCode and Cline configs request 300 seconds; for other clients use their own timeout setting. A first npx download can need more startup time than an installed local package.
+Long tool calls need an adequate client timeout. The server defaults to 300 seconds for `x_search` and 900 seconds for opt-in `x_deep_search`; generated Codex, OpenCode and Cline configs add 30 seconds to the relevant selected limit. For Cursor, VS Code and Claude Code use their own timeout setting at or above the chosen server limit plus that allowance. A first npx download can need more startup time than an installed local package.
 
 ## Settings
 
@@ -28,11 +28,13 @@ Flags > environment > defaults. No writable project config file is required.
 | `--auth` | `AGENT_X_SEARCH_AUTH` | `oauth` |
 | `--model` | `AGENT_X_SEARCH_MODEL` | `grok-4.6` |
 | `--enable-deep` | `AGENT_X_SEARCH_ENABLE_DEEP` | off; accept 0/1/false/true |
+| `--timeout-ms` | `AGENT_X_SEARCH_TIMEOUT_MS` | `300000` (5 minutes) |
+| `--deep-timeout-ms` | `AGENT_X_SEARCH_DEEP_TIMEOUT_MS` | `900000` (15 minutes) |
 | `--grok-home` | `AGENT_X_SEARCH_GROK_HOME`, then `GROK_HOME` | current user's `.grok` |
 | `--grok-cli` | `AGENT_X_SEARCH_GROK_CLI` | official home executable, then PATH |
 | `--temp-dir` | `AGENT_X_SEARCH_TEMP_DIR` | OS temp / `agent-x-search` |
 
-Path overrides must be absolute. Node fetch follows HTTP_PROXY/HTTPS_PROXY/NO_PROXY when launched with `--use-env-proxy`; SOCKS-only ALL_PROXY is not supported by this Node fetch setup. No system proxy setting changes. The npm bin shebang supplies the Node flag; direct Node launches must include it.
+Timeout values are positive integer milliseconds from `1000` through `3600000`; flags override environment variables. A timeout cancels only the owned request/process, but an upstream request may already have consumed subscription quota or API spend. Path overrides must be absolute. Node fetch follows HTTP_PROXY/HTTPS_PROXY/NO_PROXY when launched with `--use-env-proxy`; SOCKS-only ALL_PROXY is not supported by this Node fetch setup. No system proxy setting changes. The npm bin shebang supplies the Node flag; direct Node launches must include it.
 
 MCP hosts may filter inherited environment variables. `--use-env-proxy` does not supply a missing proxy address: configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY explicitly in the server's environment when your network requires them. After changing the client configuration, reload its MCP connection or start a new session. An `UND_ERR_CONNECT_TIMEOUT` at about ten seconds is a connection failure, distinct from the server's longer search deadline.
 

@@ -11,10 +11,14 @@
         "--auth",
         "oauth",
         "--model",
-        "grok-4.6"
+        "grok-4.6",
+        "--timeout-ms",
+        "300000",
+        "--deep-timeout-ms",
+        "900000"
       ],
       "enabled": true,
-      "timeout": 300000
+      "timeout": 330000
     }
   }
 }

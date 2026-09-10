@@ -33,7 +33,7 @@ codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
 claude mcp add --transport stdio agent-x-search -- npx -y agent-x-search@0.1.0 serve
 ```
 
-Set your client's tool timeout to 300 seconds for long searches. Generate a complete config without changing files:
+`x_search` defaults to 300 seconds; opt-in `x_deep_search` defaults to 900 seconds. Both limits are editable with `--timeout-ms` / `--deep-timeout-ms` (or their environment variables, 1 second to 1 hour). Generate a complete config without changing files:
 
 ```sh
 npx -y agent-x-search@0.1.0 config --client codex
@@ -86,7 +86,7 @@ Results retain `answer`, `x_citations`, `citation_count`, `citation_status`, `ba
 
 ## Configure and troubleshoot
 
-Flags override environment variables, then defaults. No project config file is needed. [All settings and errors](docs/clients.md#settings).
+Flags override environment variables, then defaults. No project config file is needed. `--help` and generated client configs show both timeout controls; generated Codex/OpenCode/Cline configs give the selected server limit another 30 seconds to return. [All settings and errors](docs/clients.md#settings).
 
 - `reauth_required`: use official `grok models` or `grok login`.
 - `cli_metadata_required`: run `grok models`; version headers come from its cache.

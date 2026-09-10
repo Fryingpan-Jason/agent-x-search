@@ -8,10 +8,10 @@ import { clientConfig, CLIENTS, doctor } from '../src/command.mjs';
 import { fakeHome, fixtureKey, fixtureRefresh } from './helpers.mjs';
 
 test('defaults, precedence and billing conflicts fail before requests', () => {
-  assert.equal(parseSettings([], {}).auth, 'oauth'); assert.equal(parseSettings([], {}).enableDeep, false);
+  assert.equal(parseSettings([], {}).auth, 'oauth'); assert.equal(parseSettings([], {}).enableDeep, false); assert.equal(parseSettings([], {}).timeoutMs, 300_000); assert.equal(parseSettings([], {}).deepTimeoutMs, 900_000);
   assert.equal(parseSettings(['--model', 'chosen'], { AGENT_X_SEARCH_MODEL: 'env' }).model, 'chosen');
-  assert.equal(parseSettings([], { AGENT_X_SEARCH_MODEL: 'env' }).model, 'env');
-  for (const args of [['--auth', 'auto'], ['--auth', 'api-key', '--enable-deep'], ['--grok-home', 'relative'], ['--model', 'a\nb'], ['--unknown'], ['--auth']]) assert.throws(() => parseSettings(args, {}), { code: 'invalid_configuration' });
+  assert.equal(parseSettings([], { AGENT_X_SEARCH_MODEL: 'env' }).model, 'env'); assert.equal(parseSettings(['--timeout-ms', '600000'], { AGENT_X_SEARCH_TIMEOUT_MS: '120000' }).timeoutMs, 600_000); assert.equal(parseSettings([], { AGENT_X_SEARCH_DEEP_TIMEOUT_MS: '1200000' }).deepTimeoutMs, 1_200_000);
+  for (const args of [['--auth', 'auto'], ['--auth', 'api-key', '--enable-deep'], ['--grok-home', 'relative'], ['--model', 'a\nb'], ['--timeout-ms', '999'], ['--deep-timeout-ms', '3600001'], ['--timeout-ms', 'abc'], ['--unknown'], ['--auth']]) assert.throws(() => parseSettings(args, {}), { code: 'invalid_configuration' });
   assert.throws(() => checkNode('24.4.0')); assert.doesNotThrow(() => checkNode('24.5.0'));
 });
 test('CLI location uses platform and overrides instead of a personal path', () => {
@@ -63,6 +63,7 @@ test('six client configurations are portable by default, pinned, and never inclu
     const text = clientConfig(s);
     assert.match(text, /agent-x-search@0\.1\.0/); assert.ok(!text.includes(process.execPath));
     assert.ok(!text.includes('XAI_API_KEY'));
+    assert.match(text, /--timeout-ms/); assert.match(text, /--deep-timeout-ms/);
     if (client !== 'codex') {
       const doc = JSON.parse(text);
       assert.ok(client === 'vscode' ? doc.servers : client === 'opencode' ? doc.mcp : doc.mcpServers);
@@ -70,6 +71,7 @@ test('six client configurations are portable by default, pinned, and never inclu
   }
   const text = clientConfig(parseSettings(['config', '--client', 'cursor', '--local'], {}));
   assert.ok(text.includes(JSON.stringify(process.execPath).slice(1, -1))); assert.match(text, /use-env-proxy/);
+  assert.match(clientConfig(parseSettings(['config', '--client', 'codex', '--enable-deep'], {})), /tool_timeout_sec = 930/);
 });
 test('doctor reads metadata only; API mode works without CLI', async t => {
   const home = await fakeHome(t);

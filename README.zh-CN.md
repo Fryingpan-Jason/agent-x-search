@@ -22,7 +22,7 @@ codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
 npx -y agent-x-search@0.1.0 config --client codex
 ```
 
-配置目标包括 `codex`、`claude-code`、`cursor`、`vscode`、`opencode`、`cline`。建议工具超时设为 300 秒。配置提供、协议测试与客户端实际验证是不同级别，见 [兼容表](docs/clients.md)。不能启动本机进程的云端客户端不算已支持。
+配置目标包括 `codex`、`claude-code`、`cursor`、`vscode`、`opencode`、`cline`。默认 `x_search` 超时为 300 秒，启用的 `x_deep_search` 为 900 秒；可通过 `--timeout-ms` / `--deep-timeout-ms` 或对应环境变量改为 1 秒至 1 小时。生成的 Codex/OpenCode/Cline 配置会比所选服务端上限额外预留 30 秒。配置提供、协议测试与客户端实际验证是不同级别，见 [兼容表](docs/clients.md)。不能启动本机进程的云端客户端不算已支持。
 
 日常使用可以安装到自选目录，再用 `config --client codex --local` 生成固定 Node 路径配置；不必全局 npm 安装或每次经 npx 启动。Windows 路径含空格时加引号，完整步骤见英文 README。客户端负责启动 MCP，不需要另开 Grok 或终端窗口。
 

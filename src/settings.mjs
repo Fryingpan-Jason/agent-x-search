@@ -7,9 +7,16 @@ export class SearchError extends Error {
   constructor(code, message) { super(message); this.code = code; }
 }
 const bad = message => { throw new SearchError('invalid_configuration', message); };
+function duration(value, name, fallback) {
+  if (value === undefined) return fallback;
+  if (typeof value !== 'string' || !/^[1-9]\d*$/.test(value)) bad(`${name} must be an integer number of milliseconds.`);
+  const milliseconds = Number(value);
+  if (!Number.isSafeInteger(milliseconds) || milliseconds < 1_000 || milliseconds > 3_600_000) bad(`${name} must be between 1000 and 3600000 milliseconds.`);
+  return milliseconds;
+}
 export function parseSettings(argv = [], env = process.env) {
   const values = {}, bool = new Set(['enable-deep', 'help', 'version', 'local', 'proxy-from-env', 'network']);
-  const names = new Set(['auth', 'model', 'grok-home', 'grok-cli', 'temp-dir', 'client', 'proxy']);
+  const names = new Set(['auth', 'model', 'grok-home', 'grok-cli', 'temp-dir', 'client', 'proxy', 'timeout-ms', 'deep-timeout-ms']);
   let command = 'serve';
   if (argv[0] && !argv[0].startsWith('-')) { command = argv[0]; argv = argv.slice(1); }
   if (!['serve', 'doctor', 'config'].includes(command)) bad('Expected serve, doctor, or config.');
@@ -36,7 +43,9 @@ export function parseSettings(argv = [], env = process.env) {
     grokHome: values['grok-home'] ?? env.AGENT_X_SEARCH_GROK_HOME ?? env.GROK_HOME ?? join(homedir(), '.grok'),
     cliOverride: values['grok-cli'] ?? env.AGENT_X_SEARCH_GROK_CLI,
     tempRoot: values['temp-dir'] ?? env.AGENT_X_SEARCH_TEMP_DIR ?? join(tmpdir(), 'agent-x-search'),
-    timeoutMs: 120_000, deepTimeoutMs: 240_000, deepMaxTurns: 4,
+    timeoutMs: duration(values['timeout-ms'] ?? env.AGENT_X_SEARCH_TIMEOUT_MS, 'timeout-ms', 300_000),
+    deepTimeoutMs: duration(values['deep-timeout-ms'] ?? env.AGENT_X_SEARCH_DEEP_TIMEOUT_MS, 'deep-timeout-ms', 900_000),
+    deepMaxTurns: 4,
   };
   if (!['oauth', 'api-key'].includes(settings.auth)) bad('Auth must be oauth or api-key.');
   if (settings.auth === 'api-key' && settings.enableDeep) bad('--enable-deep requires --auth oauth; billing modes never switch automatically.');
