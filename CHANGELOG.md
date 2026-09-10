@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Search timeouts are now configurable through `--timeout-ms` / `AGENT_X_SEARCH_TIMEOUT_MS` and `--deep-timeout-ms` / `AGENT_X_SEARCH_DEEP_TIMEOUT_MS`. Defaults are 300 seconds and 900 seconds; generated client configs expose the flags and reserve a 30-second response allowance.
+- Opt-in proxy environment export for all six client configuration formats, so filtered MCP environments can reach the provider.
+- Optional credential-free network doctor and allowlisted transport causes in uncertain request errors; default doctor stays offline.
+
 ## 0.1.0 — 2026-09-06
 
 - One default native X search tool; optional subscription-only CLI research.

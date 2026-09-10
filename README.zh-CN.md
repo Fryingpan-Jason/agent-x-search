@@ -22,7 +22,7 @@ codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
 npx -y agent-x-search@0.1.0 config --client codex
 ```
 
-配置目标包括 `codex`、`claude-code`、`cursor`、`vscode`、`opencode`、`cline`。建议工具超时设为 300 秒。配置提供、协议测试与客户端实际验证是不同级别，见 [兼容表](docs/clients.md)。不能启动本机进程的云端客户端不算已支持。
+配置目标包括 `codex`、`claude-code`、`cursor`、`vscode`、`opencode`、`cline`。默认 `x_search` 超时为 300 秒，启用的 `x_deep_search` 为 900 秒；可通过 `--timeout-ms` / `--deep-timeout-ms` 或对应环境变量改为 1 秒至 1 小时。生成的 Codex/OpenCode/Cline 配置会比所选服务端上限额外预留 30 秒。配置提供、协议测试与客户端实际验证是不同级别，见 [兼容表](docs/clients.md)。不能启动本机进程的云端客户端不算已支持。
 
 日常使用可以安装到自选目录，再用 `config --client codex --local` 生成固定 Node 路径配置；不必全局 npm 安装或每次经 npx 启动。Windows 路径含空格时加引号，完整步骤见英文 README。客户端负责启动 MCP，不需要另开 Grok 或终端窗口。
 
@@ -41,6 +41,8 @@ npx -y agent-x-search@0.1.0 config --client codex
 npx -y agent-x-search@0.1.0 doctor
 ```
 
-Doctor 只读本地状态，不刷新登录或调用模型。订阅代理并非保证长期兼容的第三方公共 API，账号资格、额度和官方版本变化可能影响使用。零依赖不等于无需账号或免费无限调用。
+Doctor 默认只读本地状态，不刷新登录或调用模型。订阅代理并非保证长期兼容的第三方公共 API，账号资格、额度和官方版本变化可能影响使用。零依赖不等于无需账号或免费无限调用。
+
+约十秒后连接超时，可能是 MCP 客户端未传入终端中的代理变量。请在服务环境中显式配置 HTTP_PROXY/HTTPS_PROXY/NO_PROXY，再重载 MCP。源码版新增 `config --client codex --local --proxy-from-env` 和 `doctor --network`，后者仅发送一次不带凭据的连通性 GET，不调用搜索；这些参数尚未包含在 npm 0.1.0 中。具体见[代理配置](docs/clients.md#settings)。能直连的网络无需配置代理。
 
 旧版本曾完成真实订阅搜索，深度单轮用时 32.794 秒；不能据此宣传新版全面提速。新版离线指标和待验证平台见 [性能说明](docs/performance.md)、[工程事实](docs/engineer.md)。项目不收集遥测；报告问题时不要提供认证文件、API Key、完整环境变量或私人查询。

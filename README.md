@@ -33,7 +33,7 @@ codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
 claude mcp add --transport stdio agent-x-search -- npx -y agent-x-search@0.1.0 serve
 ```
 
-Set your client's tool timeout to 300 seconds for long searches. Generate a complete config without changing files:
+`x_search` defaults to 300 seconds; opt-in `x_deep_search` defaults to 900 seconds. Both limits are editable with `--timeout-ms` / `--deep-timeout-ms` (or their environment variables, 1 second to 1 hour). Generate a complete config without changing files:
 
 ```sh
 npx -y agent-x-search@0.1.0 config --client codex
@@ -86,7 +86,7 @@ Results retain `answer`, `x_citations`, `citation_count`, `citation_status`, `ba
 
 ## Configure and troubleshoot
 
-Flags override environment variables, then defaults. No project config file is needed. [All settings and errors](docs/clients.md#settings).
+Flags override environment variables, then defaults. No project config file is needed. `--help` and generated client configs show both timeout controls; generated Codex/OpenCode/Cline configs give the selected server limit another 30 seconds to return. [All settings and errors](docs/clients.md#settings).
 
 - `reauth_required`: use official `grok models` or `grok login`.
 - `cli_metadata_required`: run `grok models`; version headers come from its cache.
@@ -95,5 +95,6 @@ Flags override environment variables, then defaults. No project config file is n
 - `rate_limited`: wait for quota availability; no retry occurred.
 - `request_uncertain`: a timeout may already have consumed quota or API spend. Do not assume it was free.
 - Startup/discovery failure: run doctor as the same OS user, check Node/paths, then the client's MCP diagnostics. No model call is needed to diagnose transport.
+- Connection timeout around ten seconds: your MCP client may not inherit terminal proxy variables. Explicitly configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY in its server environment and reload the connection. Source checkout adds opt-in proxy config export and `doctor --network`; see [proxy setup](docs/clients.md#settings). These new flags are not in npm 0.1.0. Directly connected networks need no proxy configuration.
 
 No telemetry or persistent result cache. Grok may retain its normal CLI session metadata. See [engineering evidence](docs/engineer.md), [architecture and limits](docs/architecture.md), and [contributing](CONTRIBUTING.md). MIT licensed.
