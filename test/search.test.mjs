@@ -1,9 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { directSearch, validate, nativeTool, citations, prompt, cleanAnswer, responseCitations, ENDPOINT, API_ENDPOINT } from '../src/search.mjs';
+import { directSearch, validate, nativeTool, citations, prompt, cleanAnswer, responseCitations, transportReason, ENDPOINT, API_ENDPOINT } from '../src/search.mjs';
 import { fixtureKey } from './helpers.mjs';
 const auth = mode => ({ authMode: mode, credential: async () => ({ key: fixtureKey, authMode: mode, headers: {} }) });
 const good = data => new Response(JSON.stringify({ status: 'completed', output_text: 'Evidence https://x.com/example/status/123', ...data }));
+test('connection failure includes a safe cause code, never raw exception text', async () => {
+  await assert.rejects(directSearch({ query: 'q' }, { ...auth('api-key'), fetchImpl: async () => { throw Object.assign(new Error(fixtureKey), { cause: { code: 'UND_ERR_CONNECT_TIMEOUT' } }); } }), e => e.code === 'request_uncertain' && e.message.includes('UND_ERR_CONNECT_TIMEOUT') && !e.message.includes(fixtureKey));
+  assert.equal(transportReason({ cause: { code: fixtureKey } }), 'TRANSPORT_ERROR');
+});
 test('strict current search filters and desired counts', () => {
   for (const a of [{}, { query: '' }, { query: 'q', count: 1.5 }, { query: 'q', count: 21 }, { query: 'q', include_handles: ['a'], exclude_handles: ['b'] }, { query: 'q', from_date: '2026-02-30' }, { query: 'q', from_date: '2026-09-02', to_date: '2026-09-01' }, { query: 'q', media: 'yes' }, { query: 'q', max_search_results: 10 }, { query: 'q', include_handles: ['bad!'] }]) assert.throws(() => validate(a), { code: 'invalid_arguments' });
   const a = validate({ query: 'q', include_handles: ['@xai'], from_date: '2024-02-29', media: 'both' });
