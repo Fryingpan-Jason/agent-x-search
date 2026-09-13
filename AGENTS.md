@@ -1,5 +1,7 @@
 # Contributor entry
 
+The active development branch is `main`, tracking `origin/main`. Follow the branch and release conventions in CONTRIBUTING.md. Local `archive/*` branches preserve private predecessor history: never merge or push them to the public repository.
+
 Read README.md, docs/prd.md, docs/architecture.md, docs/engineer.md, then docs/build-log.md. Product and architecture changes need maintainer agreement. Follow the host's environment rules without copying machine inventories here.
 
 Public scope: stdio MCP, zero runtime dependencies, explicit OAuth/API-key selection, default x_search and opt-in subscription CLI research. The executable schema is the contract; README/clients document CLI interaction. There are no UI pages or HTTP endpoints, so no separate UX/API document set is needed.
