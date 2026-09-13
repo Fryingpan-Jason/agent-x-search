@@ -21,15 +21,15 @@ const installed = join(dest, 'node_modules', 'agent-x-search'), entry = join(ins
 const pkg = JSON.parse(await readFile(join(installed, 'package.json'), 'utf8'));
 assert.equal(Object.keys(pkg.dependencies || {}).length, 0);
 const childEnv = { ...process.env, AGENT_X_SEARCH_AUTH: 'api-key', AGENT_X_SEARCH_ENABLE_DEEP: '0', XAI_API_KEY: '' };
-const version = await exec(process.execPath, ['--use-env-proxy', entry, '--version'], { env: childEnv, windowsHide: true }); assert.equal(version.stdout.trim(), '0.1.0');
+const version = await exec(process.execPath, ['--use-env-proxy', entry, '--version'], { env: childEnv, windowsHide: true }); assert.equal(version.stdout.trim(), '0.1.1');
 const shim = join(dest, 'node_modules', '.bin', process.platform === 'win32' ? 'agent-x-search.cmd' : 'agent-x-search');
 const shimResult = process.platform === 'win32'
   ? await exec(join(process.env.SystemRoot || process.env.SYSTEMROOT, 'System32', 'cmd.exe'), ['/d', '/s', '/c', `""${shim}" --version"`], { windowsHide: true, windowsVerbatimArguments: true })
   : await exec(shim, ['--version']);
-assert.equal(shimResult.stdout.trim(), '0.1.0');
+assert.equal(shimResult.stdout.trim(), '0.1.1');
 for (const client of ['codex', 'claude-code', 'cursor', 'vscode', 'opencode', 'cline']) {
   const { stdout } = await exec(process.execPath, [entry, 'config', '--client', client], { env: childEnv, windowsHide: true });
-  assert.match(stdout, /agent-x-search@0\.1\.0/); if (client !== 'codex') JSON.parse(stdout);
+  assert.match(stdout, /agent-x-search@0\.1\.1/); if (client !== 'codex') JSON.parse(stdout);
 }
 for (const fixtureMode of [false, true]) {
   const transport = new StdioClientTransport({ command: process.execPath, args: ['--use-env-proxy', fixtureMode ? fileURLToPath(new URL('../fixtures/offline-server.mjs', import.meta.url)) : entry], env: { ...childEnv, AGENT_TEST_ROOT: installed }, stderr: 'pipe' });

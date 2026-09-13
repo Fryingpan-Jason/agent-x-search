@@ -6,20 +6,20 @@
 
 非官方本地 stdio MCP，不是 Skill。默认复用官方 Grok CLI 的现有订阅登录，也可显式选择 xAI API Key。零运行时依赖、无构建，不需要 HTTP 服务、浏览器或开机启动项。
 
-**0.1.0 已发布到 [npm](https://www.npmjs.com/package/agent-x-search)** 和 [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0)，使用同一安装包。可以直接使用下方 npm 命令，也可下载 GitHub 上的 tgz 包和校验文件。API Key 路径仅通过离线契约测试，尚未实测。
+**当前版本 0.1.1**：[GitHub 发布包](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.1) · [npm 版本列表](https://www.npmjs.com/package/agent-x-search?activeTab=versions)。如果 npm 尚未列出 0.1.1，请先下载 GitHub 的 tgz 包和校验文件，按英文 README 的固定路径安装说明使用。API Key 路径仅通过离线契约测试，尚未实测。
 
 ## 接入
 
 需要 Node.js 24.5+、支持本地 stdio MCP 的客户端、网络及可用账号。订阅用户先安装并登录官方 Grok CLI，再执行一次 `grok models`。
 
 ```sh
-codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
+codex mcp add agent-x-search -- npx -y agent-x-search@0.1.1 serve
 ```
 
 只生成配置，不修改文件：
 
 ```sh
-npx -y agent-x-search@0.1.0 config --client codex
+npx -y agent-x-search@0.1.1 config --client codex
 ```
 
 配置目标包括 `codex`、`claude-code`、`cursor`、`vscode`、`opencode`、`cline`。默认 `x_search` 超时为 300 秒，启用的 `x_deep_search` 为 900 秒；可通过 `--timeout-ms` / `--deep-timeout-ms` 或对应环境变量改为 1 秒至 1 小时。生成的 Codex/OpenCode/Cline 配置会比所选服务端上限额外预留 30 秒。配置提供、协议测试与客户端实际验证是不同级别，见 [兼容表](docs/clients.md)。不能启动本机进程的云端客户端不算已支持。
@@ -38,11 +38,11 @@ npx -y agent-x-search@0.1.0 config --client codex
 输入包含查询、账号包含或排除、日期、期望条数、媒体理解和详细程度；账号包含与排除互斥。结果提供答案、引用、引用数、后端、模型、耗时、认证模式、已报告用量及部分结果标记。
 
 ```sh
-npx -y agent-x-search@0.1.0 doctor
+npx -y agent-x-search@0.1.1 doctor
 ```
 
 Doctor 默认只读本地状态，不刷新登录或调用模型。订阅代理并非保证长期兼容的第三方公共 API，账号资格、额度和官方版本变化可能影响使用。零依赖不等于无需账号或免费无限调用。
 
-约十秒后连接超时，可能是 MCP 客户端未传入终端中的代理变量。请在服务环境中显式配置 HTTP_PROXY/HTTPS_PROXY/NO_PROXY，再重载 MCP。源码版新增 `config --client codex --local --proxy-from-env` 和 `doctor --network`，后者仅发送一次不带凭据的连通性 GET，不调用搜索；这些参数尚未包含在 npm 0.1.0 中。具体见[代理配置](docs/clients.md#settings)。能直连的网络无需配置代理。
+约十秒后连接超时，可能是 MCP 客户端未传入终端中的代理变量。请在服务环境中显式配置 HTTP_PROXY/HTTPS_PROXY/NO_PROXY，再重载 MCP。0.1.1 新增 `config --client codex --local --proxy-from-env` 和 `doctor --network`，后者仅发送一次不带凭据的连通性 GET，不调用搜索；使用 0.1.0 的用户需升级后再使用这些参数。具体见[代理配置](docs/clients.md#settings)。能直连的网络无需配置代理。
 
 旧版本曾完成真实订阅搜索，深度单轮用时 32.794 秒；不能据此宣传新版全面提速。新版离线指标和待验证平台见 [性能说明](docs/performance.md)、[工程事实](docs/engineer.md)。项目不收集遥测；报告问题时不要提供认证文件、API Key、完整环境变量或私人查询。

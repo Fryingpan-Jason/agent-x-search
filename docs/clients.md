@@ -2,7 +2,7 @@
 
 All targets connect to the same local stdio server. They are not separate plugins. Config generation does not modify files or authenticate.
 
-From npm: `npx -y agent-x-search@0.1.0 config --client CLIENT`. From a source checkout: `node bin/agent-x-search.mjs config --client CLIENT`. Add `--local` when generating a fixed installed-path command. Add `--auth api-key` explicitly for API billing, or `--enable-deep` for optional subscription CLI research.
+From npm: `npx -y agent-x-search@0.1.1 config --client CLIENT`. From a source checkout: `node bin/agent-x-search.mjs config --client CLIENT`. Add `--local` when generating a fixed installed-path command. Add `--auth api-key` explicitly for API billing, or `--enable-deep` for optional subscription CLI research.
 
 | Client | Target | Where / official source | Verification at candidate preparation |
 | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ Timeout values are positive integer milliseconds from `1000` through `3600000`; 
 
 MCP hosts may filter inherited environment variables. `--use-env-proxy` does not supply a missing proxy address: configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY explicitly in the server's environment when your network requires them. After changing the client configuration, reload its MCP connection or start a new session. An `UND_ERR_CONNECT_TIMEOUT` at about ten seconds is a connection failure, distinct from the server's longer search deadline.
 
-From this source checkout (not npm 0.1.0), generate explicit proxy forwarding with `node bin/agent-x-search.mjs config --client CLIENT --local --proxy-from-env`. It copies only HTTP_PROXY/HTTPS_PROXY/NO_PROXY, preferring lowercase values when both exist, and mirrors both casings. Alternatively, use `--proxy http://PROXY_HOST:PORT` to set both HTTP and HTTPS proxies with localhost exclusions. Add the output to your client configuration; no files are changed automatically. Proxy URLs containing credentials are rejected. Without either option, config generation remains unchanged and does not copy terminal proxy settings. Directly connected networks need no proxy option.
+With version 0.1.1 or this source checkout, generate explicit proxy forwarding with `node bin/agent-x-search.mjs config --client CLIENT --local --proxy-from-env`. It copies only HTTP_PROXY/HTTPS_PROXY/NO_PROXY, preferring lowercase values when both exist, and mirrors both casings. Alternatively, use `--proxy http://PROXY_HOST:PORT` to set both HTTP and HTTPS proxies with localhost exclusions. Add the output to your client configuration; no files are changed automatically. Proxy URLs containing credentials are rejected. Without either option, config generation remains unchanged and does not copy terminal proxy settings. Directly connected networks need no proxy option.
 
 `node --use-env-proxy bin/agent-x-search.mjs doctor --network` optionally makes one unauthenticated GET to the selected provider's models endpoint. HTTP 401 means the endpoint was reached, not that your login works. It sends no credentials or inference request, follows no redirects and does not retry. Default doctor remains offline. Run it with the same environment as the MCP process; success in an unrelated terminal does not establish that the client passes the proxy through.
 

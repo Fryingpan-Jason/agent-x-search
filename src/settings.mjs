@@ -2,7 +2,7 @@ import { homedir, tmpdir } from 'node:os';
 import { join, isAbsolute } from 'node:path';
 import { existsSync } from 'node:fs';
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 export class SearchError extends Error {
   constructor(code, message) { super(message); this.code = code; }
 }

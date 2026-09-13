@@ -15,7 +15,7 @@ for (let n = 0; n < 10; n++) {
   } finally { c.close(); }
 }
 const stats = a => { a.sort((x, y) => x - y); return { p50_ms: a[Math.floor(a.length * .5)], p95_ms: a[Math.ceil(a.length * .95) - 1] }; };
-const record = { at: new Date().toISOString(), version: '0.1.0', node: process.versions.node, platform: process.platform, starts: 10, mock_calls: 100, startup: stats(startup), mock_roundtrip: stats(calls), peak_observed_rss_bytes: Math.max(...rss), tool_definitions_bytes: schemaBytes, inference_requests: 0, scope: 'Mock provider through stdio. Includes Node startup, excludes npm/npx cold download, network, OAuth, Grok CLI and inference. RSS sampled during calls, not a lifetime peak.' };
+const record = { at: new Date().toISOString(), version: '0.1.1', node: process.versions.node, platform: process.platform, starts: 10, mock_calls: 100, startup: stats(startup), mock_roundtrip: stats(calls), peak_observed_rss_bytes: Math.max(...rss), tool_definitions_bytes: schemaBytes, inference_requests: 0, scope: 'Mock provider through stdio. Includes Node startup, excludes npm/npx cold download, network, OAuth, Grok CLI and inference. RSS sampled during calls, not a lifetime peak.' };
 await mkdir(new URL('../.artifacts/', import.meta.url), { recursive: true });
 await writeFile(new URL('../.artifacts/benchmark.json', import.meta.url), JSON.stringify(record, null, 2) + '\n');
 console.log(JSON.stringify(record, null, 2));

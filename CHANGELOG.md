@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 — 2026-09-13
 
 - Search timeouts are now configurable through `--timeout-ms` / `AGENT_X_SEARCH_TIMEOUT_MS` and `--deep-timeout-ms` / `AGENT_X_SEARCH_DEEP_TIMEOUT_MS`. Defaults are 300 seconds and 900 seconds; generated client configs expose the flags and reserve a 30-second response allowance.
 - Opt-in proxy environment export for all six client configuration formats, so filtered MCP environments can reach the provider.

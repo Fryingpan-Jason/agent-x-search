@@ -61,7 +61,7 @@ test('six client configurations are portable by default, pinned, and never inclu
   for (const client of CLIENTS) {
     const s = parseSettings(['config', '--client', client, '--auth', 'api-key'], {});
     const text = clientConfig(s);
-    assert.match(text, /agent-x-search@0\.1\.0/); assert.ok(!text.includes(process.execPath));
+    assert.match(text, /agent-x-search@0\.1\.1/); assert.ok(!text.includes(process.execPath));
     assert.ok(!text.includes('XAI_API_KEY'));
     assert.match(text, /--timeout-ms/); assert.match(text, /--deep-timeout-ms/);
     if (client !== 'codex') {

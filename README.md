@@ -6,7 +6,7 @@
 
 An unofficial, local **stdio MCP server**. Existing Grok subscription login by default; explicitly selected xAI API keys are also supported. No browser automation, HTTP server, background service, build step or runtime dependencies.
 
-**0.1.0 is available on [npm](https://www.npmjs.com/package/agent-x-search)** and [GitHub Releases](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.0), with the same installable package archive. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
+**Version 0.1.1** — [GitHub release archive](https://github.com/Fryingpan-Jason/agent-x-search/releases/tag/v0.1.1) · [npm versions](https://www.npmjs.com/package/agent-x-search?activeTab=versions). If npm does not yet list 0.1.1, install the GitHub `.tgz` archive using the fixed-path instructions below. API-key mode is experimental and has not been live-tested. [Verification matrix](docs/engineer.md).
 
 ## A 30-second walkthrough
 
@@ -29,14 +29,14 @@ Requires **Node.js 24.5+**, a local MCP client, network access, and an eligible 
 Quick start:
 
 ```sh
-codex mcp add agent-x-search -- npx -y agent-x-search@0.1.0 serve
-claude mcp add --transport stdio agent-x-search -- npx -y agent-x-search@0.1.0 serve
+codex mcp add agent-x-search -- npx -y agent-x-search@0.1.1 serve
+claude mcp add --transport stdio agent-x-search -- npx -y agent-x-search@0.1.1 serve
 ```
 
 `x_search` defaults to 300 seconds; opt-in `x_deep_search` defaults to 900 seconds. Both limits are editable with `--timeout-ms` / `--deep-timeout-ms` (or their environment variables, 1 second to 1 hour). Generate a complete config without changing files:
 
 ```sh
-npx -y agent-x-search@0.1.0 config --client codex
+npx -y agent-x-search@0.1.1 config --client codex
 ```
 
 Other targets: `claude-code`, `cursor`, `vscode`, `opencode`, `cline`. One package, not six plugins. [Client setup and verification levels](docs/clients.md).
@@ -46,11 +46,11 @@ Other targets: `claude-code`, `cursor`, `vscode`, `opencode`, `cline`. One packa
 Avoid runtime npx lookups by installing into a directory you choose:
 
 ```sh
-npm install --prefix /absolute/path/to/agent-tools --omit=dev --ignore-scripts agent-x-search@0.1.0
+npm install --prefix /absolute/path/to/agent-tools --omit=dev --ignore-scripts agent-x-search@0.1.1
 node --use-env-proxy /absolute/path/to/agent-tools/node_modules/agent-x-search/bin/agent-x-search.mjs config --client codex --local
 ```
 
-On Windows, use your own absolute path and quote paths containing spaces. Paste the generated config into your client. It starts the installed file directly; no global npm installation or OS startup item is needed. To install the GitHub archive, use the downloaded `agent-x-search-0.1.0.tgz` instead of the package name.
+On Windows, use your own absolute path and quote paths containing spaces. Paste the generated config into your client. It starts the installed file directly; no global npm installation or OS startup item is needed. To install the GitHub archive, use the downloaded `agent-x-search-0.1.1.tgz` instead of the package name.
 
 From source: `node --use-env-proxy bin/agent-x-search.mjs serve`. Only contributors running tests need `npm ci`.
 
@@ -65,8 +65,8 @@ The subscription proxy is an internal compatibility surface, not a guaranteed pu
 There is **no automatic billing switch**. Setting `XAI_API_KEY` alone does not change OAuth mode. Failed or uncertain requests are never retried or sent to another backend.
 
 ```sh
-npx -y agent-x-search@0.1.0 doctor
-npx -y agent-x-search@0.1.0 doctor --auth api-key
+npx -y agent-x-search@0.1.1 doctor
+npx -y agent-x-search@0.1.1 doctor --auth api-key
 ```
 
 Doctor only reads local state. It does not search, refresh tokens, or validate credentials against xAI.
@@ -95,6 +95,6 @@ Flags override environment variables, then defaults. No project config file is n
 - `rate_limited`: wait for quota availability; no retry occurred.
 - `request_uncertain`: a timeout may already have consumed quota or API spend. Do not assume it was free.
 - Startup/discovery failure: run doctor as the same OS user, check Node/paths, then the client's MCP diagnostics. No model call is needed to diagnose transport.
-- Connection timeout around ten seconds: your MCP client may not inherit terminal proxy variables. Explicitly configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY in its server environment and reload the connection. Source checkout adds opt-in proxy config export and `doctor --network`; see [proxy setup](docs/clients.md#settings). These new flags are not in npm 0.1.0. Directly connected networks need no proxy configuration.
+- Connection timeout around ten seconds: your MCP client may not inherit terminal proxy variables. Explicitly configure HTTP_PROXY/HTTPS_PROXY/NO_PROXY in its server environment and reload the connection. Version 0.1.1 adds opt-in proxy config export and `doctor --network`; see [proxy setup](docs/clients.md#settings). Upgrade from 0.1.0 to use these flags. Directly connected networks need no proxy configuration.
 
 No telemetry or persistent result cache. Grok may retain its normal CLI session metadata. See [engineering evidence](docs/engineer.md), [architecture and limits](docs/architecture.md), and [contributing](CONTRIBUTING.md). MIT licensed.

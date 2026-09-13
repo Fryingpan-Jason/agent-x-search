@@ -1,6 +1,6 @@
 {
   "name": "agent-x-search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "mcpName": "io.github.Fryingpan-Jason/agent-x-search",
   "description": "Give your agent native X search, with original-post citations and transparent usage.",
   "license": "MIT",

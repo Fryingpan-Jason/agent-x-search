@@ -1,5 +1,7 @@
 # Engineering and evidence
 
+0.1.1 local verification (2026-09-13): all 34 source tests, installed-tarball tests, six generated client configurations and offline benchmark passed on Windows / Node 26.8.1. The prior release evidence below remains historical; no new live-provider verification is claimed.
+
 Implementation: Node >=24.5, ESM, zero runtime dependencies. settings handles flags/environment, credentials handles auth/redaction, search handles Responses, runner handles optional CLI, transport handles stdio, command exposes serve/doctor/config. src/server.mjs is a compatibility entry for existing fixed-path registrations. Runtime modules never import the development SDK.
 
 Development commands: `npm ci --ignore-scripts`, `npm test`, `npm run test:package`, `npm run bench`, `npm run audit:release`. All are inference-free. Test scratch defaults to OS temp; AGENT_X_SEARCH_TEST_TMP can select an external non-Git test directory. Reports and installed-package checks are generated under ignored `.artifacts/`. Private predecessor evidence is retained locally, not in public history.
